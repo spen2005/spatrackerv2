@@ -186,14 +186,16 @@ def preprocess_image(img_tensor, mode="crop", target_size=518, keep_ratio=False)
                 out = torch.nn.functional.pad(
                     out, (pad_left, pad_right, pad_top, pad_bottom), mode="constant", value=1.0
                 )
-        else:  # crop
-            new_W = target_size
-            new_H = round(H * (new_W / W) / 14) * 14
-            out = torch.nn.functional.interpolate(img.unsqueeze(0), size=(new_H, new_W), mode="bicubic", align_corners=False).squeeze(0)
-            if keep_ratio==False:
-                if new_H > target_size:
-                    start_y = (new_H - target_size) // 2
-                    out = out[:, start_y : start_y + target_size, :]
+        else:
+            # new_W = target_size
+            # new_H = round(H * (new_W / W) / 14) * 14
+            # out = torch.nn.functional.interpolate(img.unsqueeze(0), size=(new_H, new_W), mode="bicubic", align_corners=False).squeeze(0)
+            # # if keep_ratio==False:
+            #     if new_H > target_size:
+            #         start_y = (new_H - target_size) // 2
+            #         out = out[:, start_y : start_y + target_size, :]
+            out = img
+            
         processed.append(out)
     result = torch.stack(processed)
     if squeeze:
